@@ -45,10 +45,13 @@ module.exports = function () {
         where key_name=\'' + lastAction + '\') + 1'
       let action = await db.knex.raw(qAction)
       console.log(action.rows[0].key_name)
+      return action.rows[0].key_name || ''
     } catch (error) {
       console.log(error)
     }
   }
-
+  internals.addHistory = async (uid, payload) => {
+    
+  }
   return internals
 }
