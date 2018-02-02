@@ -3,13 +3,13 @@
 var express = require('express')
 var app = express()
 
-app.get('/', function (req, res) {
-  res.send('Hello World')
+app.post('/webhook', function (req, res) {
+  res.send('Webhook TEST!!!')
 })
 
 var server = app.listen(8000, function () {
   var host = server.address().address
   var port = server.address().port
 
-  console.log('hello! http://%s:%s', host, port)
+  console.log('Hi! http://%s:%s', host, port)
 })
