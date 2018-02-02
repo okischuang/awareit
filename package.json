@@ -1,0 +1,26 @@
+{
+  "name": "awareit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/okischuang/awareit.git"
+  },
+  "keywords": [
+    "line",
+    "bot"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/okischuang/awareit/issues"
+  },
+  "homepage": "https://github.com/okischuang/awareit#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
