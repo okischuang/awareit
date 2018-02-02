@@ -31,6 +31,10 @@ bot.on('message', function (event) {
           break
         case 'hi':
           History.updateAction(userId, 'add_thing_place', {stuff_postition: 'bag'})
+          History.addHistory(userId).then((h) => {
+            console.log(h)
+          })
+         
           response = confirmDialog
           break
         case 'time':

@@ -24,6 +24,16 @@ module.exports = function () {
     }
   }
 
+  let addStuff = async (uid, name) => {
+    let stuffID = await db.knex('user_stuff').returning('id')
+    .insert({
+      uid: uid,
+      name: name
+    })
+    return stuffID
+  }
+
   internals.getUserStuff = getUserStuff
+  internals.addStuff = addStuff
   return internals
 }

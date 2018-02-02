@@ -1,6 +1,7 @@
 'use strict'
 
 const db = require('../db')
+const Stuff = require('./stuff')()
 const _ = require('underscore')
 
 module.exports = function () {
@@ -50,8 +51,32 @@ module.exports = function () {
       console.log(error)
     }
   }
-  internals.addHistory = async (uid, payload) => {
-    
+  internals.addHistory = async (uid) => {
+    // get last action state
+    let action = await db.knex('user_action_state').where({
+      uid: uid
+    }).select('*')
+    //console.log(action)
+    // add stuff
+    let stuffID = await Stuff.addStuff(uid, action[0].data.stuff_name)
+    let stuffPosition = action[0].data.stuff_position
+    let tags = action[0].data.tags
+    let location = action[0].data.location
+    let insertData = {
+      stuff_id: stuffID[0],
+      stuff_position: stuffPosition,
+      uid: uid,
+      tags: tags,
+      location: location
+    }
+    let hid = await db.knex('history')
+    .insert(insertData).returning('id')
+
+    return Object.assign(
+      {
+        hid: hid[0],
+        stuff_name: action[0].data.stuff_name
+      }, insertData)
   }
   return internals
 }
