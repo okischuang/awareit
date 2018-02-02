@@ -78,5 +78,24 @@ module.exports = function () {
         stuff_name: action[0].data.stuff_name
       }, insertData)
   }
+  internals.getAllHistory = async (uid) => {
+    let allHistory = await db.knex('history').where({
+      uid: uid
+    })
+    return allHistory
+  }
+  
+  internals.getStuffHistory = async (uid, stuffID) => {
+    try {
+      let history = await db.knex('history').where({
+        uid: uid,
+        stuff_id: stuffID
+      })
+      console.log(history)
+      return history
+    } catch (error) {
+      console.error(error)
+    }
+  }
   return internals
 }
