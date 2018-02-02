@@ -15,11 +15,14 @@ module.exports = function () {
     } else {
       let ret = await db.knex('user_stuff')
       .join('users', 'user_stuff.uid', 'users.uid')
-      .select('user_stuff.name')
+      .select('user_stuff.name', 'user_stuff.id')
       let stuffList = ret.map((stuff) => {
-        return stuff.name
+        return {
+          stuff_id: stuff.id,
+          stuff_name: stuff.name
+        }
       })
-      console.log('All stuff: ' + stuffList)
+      console.log('All stuff: ' + JSON.stringify(stuffList))
       return stuffList
     }
   }

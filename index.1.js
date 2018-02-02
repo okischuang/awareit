@@ -21,6 +21,12 @@ bot.on('message', function (event) {
       let response = message.text
       let cmd = message.text.toLowerCase()
       switch (cmd) {
+        case 'allhistory':
+          History.getAllHistory(userId)
+          break
+        case 'stuffhistory':
+          History.getStuffHistory(userId, 13)
+          break
         case 'getstuff':
           console.log('==getStuff==')
           let stuffList = Stuff.getUserStuff(userId)
@@ -29,7 +35,7 @@ bot.on('message', function (event) {
             'text': stuffList
           }
           break
-        case 'hi':
+        case 'update':
           History.updateAction(userId, 'add_thing_place', {stuff_postition: 'bag'})
           History.addHistory(userId).then((h) => {
             console.log(h)
