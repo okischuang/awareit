@@ -1,4 +1,6 @@
 const History = require('./controllers/history')()
+const Constants = require('./constants');
+const Templates = require('./messages/templates');
 
 var linebot = require('linebot');
 
@@ -19,6 +21,13 @@ const kw_to_key = {
     'add_thing_tags': 'tags'
 }
 
+const {
+    ADD_NEW_THING,
+    ADD_THING_PLACE,
+    ADD_THING_TAGS,
+    EDIT_THINGS
+} = Constants.ACTION;
+
 
 var keyword;
 
@@ -27,10 +36,10 @@ async function map_keyword_to_response(userId) {
     let response;
     switch(keyword) {
         case 'add_thing_place':
-            response = addThingPlace;
+            response = Templates(ADD_THING_PLACE);
             break;
         case 'add_thing_tags':
-            response = addThingTags;
+            response = Templates(ADD_THING_TAGS);
             break;
         case 'add_summary':
             let ret = await History.addHistory(userId)
@@ -72,11 +81,11 @@ bot.on('message', function (event) {
 
         switch(cmd) {
             case 'add new thing':
-                response = addNewThing;
+                response = Templates(ADD_THING_TAGS);
                 keyword = 'add_new_thing';
                 break;
             case 'edit things':
-                response = editThings;
+                response = Templates(EDIT_THINGS);
                 keyword = 'pick_thing';
                 break;
             case 'lost something':
@@ -95,88 +104,6 @@ bot.on('message', function (event) {
     }
 });
 
-
-let addNewThing = {
-    "type": "template",
-    "altText": "This is a buttons template",
-    "template": {
-        "type": "buttons",
-        "title": "What do you want to add?",
-        "text": "Please select one, or enter your thing's name:",
-        "actions": [
-        {
-            "type": "postback",
-            "label": "Keys",
-            "data": "keys"
-        },
-        {
-            "type": "postback",
-            "label": "Wallet",
-            "data": "wallet"
-        },
-        {
-            "type": "postback",
-            "label": "Glasses",
-            "data": "glasses"
-        },
-        {
-            "type": "postback",
-            "label": "Umbrella",
-            "data": "umbrella" // to places
-        }
-        ]
-    }
-};
-
-let addThingPlace = {
-    "type": "template",
-    "altText": "This is a buttons template",
-    "template": {
-        "type": "buttons",
-        "title": "Where is it now?",
-        "text": "Please select one, or enter where it is:",
-        "actions": [
-        {
-            "type": "postback",
-            "label": "In my pocket",
-            "data": "in pocket"
-        },
-        {
-            "type": "postback",
-            "label": "In my bag",
-            "data": "in bag"
-        },
-        {
-            "type": "postback",
-            "label": "On my desk", // to tags
-            "data": "on desk"
-        }
-        ]
-    }
-};
-
-let addThingTags = {
-    "type": "template",
-    "altText": "This is a buttons template",
-    "template": {
-        "type": "buttons",
-        "title": "Add hashtags?",
-        "text": "This can help you remember more about your thing's status:",
-        "actions": [
-        {
-            "type": "postback",
-            "label": "Skip", // to summary
-            "data": "none"
-        }
-        ]
-    }
-};
-
-
-let editThings = {
-
-
-}
 
 bot.listen('/', PORT);
 
