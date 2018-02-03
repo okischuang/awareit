@@ -20,7 +20,6 @@ const {
     ADD_THING_PLACE,
     ADD_THING_TAGS,
     ADD_SUMMARY,
-    EDIT_THINGS
 } = Constants.ACTION;
 
 
@@ -78,10 +77,6 @@ bot.on('message', function (event) {
             case 'add new thing':
                 response = Templates(ADD_NEW_THING);
                 keyword = 'add_new_thing';
-                break;
-            case 'edit things':
-                response = Templates(EDIT_THINGS);
-                keyword = 'pick_thing';
                 break;
             case 'lost something':
             case 'settings':
