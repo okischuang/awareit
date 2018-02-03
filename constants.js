@@ -12,8 +12,6 @@ module.exports = {
     ADD_THING_TAGS: 'add_thing_tags',
     ADD_SUMMARY: 'add_summary',
     PICK_THING: 'pick_thing',
-    // PICK_THING_NEXT: 'pick_thing_next',
-    // PICK_THING_PREV: 'pick_thing_prev',
     PICK_THING_BACK: 'pick_thing_back',
     PICK_THING_HIST: 'pick_thing_hist',
     PICK_THING_HIST_NEXT: 'pick_thing_hist_next',
@@ -29,8 +27,6 @@ module.exports = {
     ALERT_BACK_OPTION: 'alert_back_option',
     UPDATE_BACK_OPTION: 'update_back_option',
     LIST_HISTORY: 'list_history',
-    // LIST_HISTORY_PREV: 'list_history_prev',
-    // LIST_HISTORY_NEXT: 'list_history_next',
   },
   ACTIONTOKEY: {
     'add_new_thing': 'stuff_name',

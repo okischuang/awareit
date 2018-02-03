@@ -15,6 +15,7 @@ const {
     ADD_THING_PLACE,
     ADD_THING_TAGS,
     ADD_SUMMARY,
+    PICK_THING
 } = Constants.ACTION;
 
 
@@ -35,8 +36,11 @@ async function map_keyword_to_response(userId) {
             let hist = ret;
             let sum = {};
             sum.type = "text";
-            sum.text = "Recorded: your " + hist.stuff_name + " is " + hist.stuff_position + " (" + hist.tags + ")";
+            sum.text = "Recorded: my " + hist.stuff_name + " is " + hist.stuff_position + " (" + hist.tags + ")";
             response = sum;
+            break;
+        case UPDATE_OPTIONS:
+            response = Templates(UPDATE_OPTIONS);
             break;
         default:
             return;
@@ -71,7 +75,11 @@ bot.on('message', function (event) {
         switch(cmd) {
             case 'add new thing':
                 response = Templates(ADD_NEW_THING);
-                keyword = 'add_new_thing';
+                keyword = ADD_NEW_THING;
+                break;
+            case 'edit things':
+                response = Templates(PICK_THING);
+                keyword = PICK_THING;
                 break;
             case 'lost something':
             case 'settings':
@@ -81,6 +89,7 @@ bot.on('message', function (event) {
         }
 
         bot.reply(event.replyToken, response).then(function (data) {
+            //success
         }).catch(function (error) {
             console.log('Error: ' + JSON.stringify(error));
         });
