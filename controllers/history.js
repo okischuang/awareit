@@ -90,7 +90,6 @@ module.exports = function () {
     })
     return allHistory
   }
-
   internals.getStuffHistory = async (uid, stuffID) => {
     try {
       let history = await db.knex('history').where({

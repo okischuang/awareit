@@ -12,6 +12,9 @@ const {
     PICK_THING_HIST,
     ALERT_LIST,
     LIST_HISTORY,
+    UPDATE_OPTIONS,
+    ALERT_OPTIONS,
+    ALERT_DATEPICKER
 } = require('../constants').ACTION;
 
 let addNewThing = {
@@ -90,10 +93,6 @@ let addThingTags = {
     }
 };
 
-let lostSomething = {
-
-}
-
 let updateOptions = {
     "type": "template",
     "altText": "This is a buttons template",
@@ -135,9 +134,11 @@ let alertOptions = {
             "data": "list alerts"
         },
         {
-            "type": "postback",
-            "label": "Add an alert",
-            "data": "add alert"
+           // "type": "postback",
+            "type":"datetimepicker",
+            "label":"Add an alert",
+            "data":"add alert",
+            "mode":"time"
         },
         {
             "type": "postback",
@@ -147,16 +148,6 @@ let alertOptions = {
         ]
     }
 };
-
-let alertDatePicker = {  
-   "type":"datetimepicker",
-   "label":"Select time",
-   "data":"storeId=12345",
-   "mode":"time",
-   "initial":"2018-02-03t00:00",
-   "max":"2019-02-03t23:59",
-   "min":"2018-02-03t00:00"
-}
 
 function pickThing(data) {
     if (!data || !Array.isArray(data)) {
@@ -176,7 +167,7 @@ function pickThing(data) {
             "actions": [Action.Postback("Choose", obj.stuff_id)]
         }
     });
-    result['template']['columns'] = columns;
+    result['template']['columns'] = columns.slice(0, 5);
     return result;
 }
 
@@ -257,7 +248,16 @@ module.exports = function(key, data) {
         break;
     case LIST_HISTORY:
         result = listHistory(data);
+        console.log(result)
         break;
+    case UPDATE_OPTIONS:
+        result = updateOptions;
+        break;
+    case ALERT_OPTIONS:
+        result = alertOptions;
+        break;
+    default:
+        console.log("No suck template");
   }
   return result;
 };

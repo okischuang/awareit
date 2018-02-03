@@ -1,4 +1,5 @@
 const History = require('./controllers/history')()
+const Stuff = require('./controllers/stuff')()
 const Constants = require('./constants');
 const Templates = require('./messages/templates');
 
@@ -15,13 +16,40 @@ const {
     ADD_THING_PLACE,
     ADD_THING_TAGS,
     ADD_SUMMARY,
-    PICK_THING
+    PICK_THING,
+    PICK_THING_HIST,
+    UPDATE_OPTIONS,
+    UPDATE_RECORD_OPTION,
+    UPDATE_ALERT_OPTION,
+    ALERT_OPTIONS,
+    ALERT_LIST_OPTION,
+    ALERT_ADD_OPTION,
+    LIST_HISTORY
 } = Constants.ACTION;
 
 
 var keyword;
 
-async function map_keyword_to_response(userId) {
+function handle_data(userId, data) {
+    let action_data = {}
+    action_data[Constants.ACTIONTOKEY[keyword]] = data
+
+    if (keyword == UPDATE_OPTIONS) {
+        if (data == 'update location') keyword = UPDATE_RECORD_OPTION;
+        else if (data == 'set alert') keyword = UPDATE_ALERT_OPTION;
+    }
+    else if (keyword == ALERT_OPTIONS) {
+        if (data == 'list alerts') keyword = ALERT_LIST_OPTION;
+        else if (data == 'add alert') keyword = ALERT_ADD_OPTION;
+    }
+
+    History.updateAction(userId, keyword, action_data).then((ret) => {
+        keyword = ret;
+        map_keyword_to_response(userId, data);
+    })
+}
+
+async function map_keyword_to_response(userId, data) {
     console.log("next keyword " + keyword);
     let response;
     switch(keyword) {
@@ -42,26 +70,26 @@ async function map_keyword_to_response(userId) {
         case UPDATE_OPTIONS:
             response = Templates(UPDATE_OPTIONS);
             break;
+        case ALERT_OPTIONS:
+            response = Templates(ALERT_OPTIONS);
+            break;
+        case LIST_HISTORY:
+            let his = await History.getStuffHistory(userId, data)
+            console.log(data)
+            response = Templates(LIST_HISTORY, his);
+            break;
         default:
+            console.log("No such keyword");
             return;
     }
     await bot.push(userId, response);
-}
-
-function handle_data(userId, data) {
-    let action_data = {}
-    action_data[Constants.ACTIONTOKEY[keyword]] = data
-    History.updateAction(userId, keyword, action_data).then((ret) => {
-        keyword = ret;
-        map_keyword_to_response(userId);
-    })
 }
 
 bot.on('postback', function (event) {
     handle_data(event.source.userId, event.postback.data);
 });
 
-bot.on('message', function (event) {
+bot.on('message', async function (event) {
     console.log('Event:', JSON.stringify(event));
 
     let userId = event.source.userId;
@@ -78,22 +106,24 @@ bot.on('message', function (event) {
                 keyword = ADD_NEW_THING;
                 break;
             case 'edit things':
-                response = Templates(PICK_THING);
+                let allObjs = await Stuff.getUserStuff(userId);
+                response = Templates(PICK_THING, allObjs);
                 keyword = PICK_THING;
                 break;
             case 'lost something':
+                let allObjsH = await Stuff.getUserStuff(userId);
+                response = Templates(PICK_THING_HIST, allObjsH);
+                keyword = PICK_THING_HIST;
+                break;
             case 'settings':
                 break;
             default:
                 handle_data(userId, message.text);
         }
 
-        bot.reply(event.replyToken, response).then(function (data) {
-            //success
-        }).catch(function (error) {
-            console.log('Error: ' + JSON.stringify(error));
-        });
+        console.log(JSON.stringify(response));
 
+        await bot.reply(event.replyToken, response);
         }
     }
 });
