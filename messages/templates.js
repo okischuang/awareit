@@ -1,6 +1,13 @@
 
 'use strict';
 
+const {
+    ADD_NEW_THING,
+    ADD_THING_PLACE,
+    ADD_THING_TAGS,
+    ADD_SUMMARY,
+} = require('../constants').ACTION;
+
 let addNewThing = {
     "type": "template",
     "altText": "This is a buttons template",
@@ -80,13 +87,13 @@ let addThingTags = {
 module.exports = function(key, data) {
   let result = null;
   switch(key) {
-    case 'add_new_thing':
+    case ADD_NEW_THING:
       result = addNewThing
       break;
-    case 'add_thing_place':
+    case ADD_THING_PLACE:
       result = addThingPlace;
       break;
-    case 'add_thing_tags':
+    case ADD_THING_TAGS:
       result = addThingTags;
       break;
   }
