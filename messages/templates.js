@@ -9,7 +9,8 @@ const {
     ADD_THING_TAGS,
     ADD_SUMMARY,
     PICK_THING,
-    PICK_THING_HIST
+    PICK_THING_HIST,
+    ALERT_LIST,
 } = require('../constants').ACTION;
 
 let addNewThing = {
@@ -174,6 +175,37 @@ function pickThing(data) {
     return result;
 }
 
+function alertList(data) {
+    if (!data || !Array.isArray(data)) {
+        return;
+    }
+    let filteredData = data.length > 5 ? data.slice(0, 5) : data;
+    let result = {
+        "type": "template",
+        "altText": "Please choose a reminder",
+        "template": {
+            "type": "carousel"
+        }
+    };
+    let columns = filteredData.map((obj)=>{
+        let timeString = "";
+        if (obj.schedule_time) {
+            timeString = obj.schedule_time.getHours() + ":" + obj.schedule_time.getMinutes();
+        }
+        return {
+            "title": obj.stuff_name,
+            "text": timeString,
+            "actions": [
+                Action.Postback("Edit", obj.id),
+                Action.Postback("Delete", obj.id),
+                Action.Postback("Back", obj.id)
+            ]
+        }
+    });
+    result['template']['columns'] = columns;
+    return result;
+}
+
 module.exports = function(key, data) {
   let result = null;
   switch(key) {
@@ -189,6 +221,9 @@ module.exports = function(key, data) {
     case PICK_THING:
     case PICK_THING_HIST:
         result = pickThing(data);
+        break;
+    case ALERT_LIST:
+        result = alertList(data);
         break;
   }
   return result;
