@@ -77,10 +77,6 @@ let addThingTags = {
     }
 };
 
-let editThings = {
-
-}
-
 module.exports = function(key, data) {
   let result = null;
   switch(key) {
@@ -92,9 +88,6 @@ module.exports = function(key, data) {
       break;
     case 'add_thing_tags':
       result = addThingTags;
-      break;
-    case 'edit_things':
-      result = editThings;
       break;
   }
   return result;
