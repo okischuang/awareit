@@ -23,6 +23,9 @@ bot.on('message', function (event) {
       let response = message.text
       let cmd = message.text.toLowerCase()
       switch (cmd) {
+        case 'allreminder':
+          Reminder.getAllReminder()
+          break
         case 'allhistory':
           History.getAllHistory(userId)
           break
