@@ -1,6 +1,8 @@
 
 'use strict';
 
+var Action = require('./action');
+
 const {
     ADD_NEW_THING,
     ADD_THING_PLACE,
@@ -85,11 +87,6 @@ let addThingTags = {
     }
 };
 
-let pickThing = {
-    "type": "text",
-    "text": "dummy"
-}
-
 let lostSomething = {
 
 }
@@ -158,22 +155,39 @@ let alertDatePicker = {
    "min":"2018-02-03t00:00"
 }
 
+function pickThing(data) {
+    let result = {
+        "type": "template",
+        "altText": "Which item do you want to update?",
+        "template": {
+            "type": "carousel"
+        }
+    };
+    let columns = data.map((obj)=>{
+        return {
+            "text": obj.stuff_name,
+            "actions": [Action.Postback("Choose", obj.stuff_id)]
+        }
+    });
+    result['template']['columns'] = columns;
+    return result;
+}
 
 module.exports = function(key, data) {
   let result = null;
   switch(key) {
     case ADD_NEW_THING:
-      result = addNewThing
-      break;
+        result = addNewThing
+        break;
     case ADD_THING_PLACE:
-      result = addThingPlace;
-      break;
+        result = addThingPlace;
+        break;
     case ADD_THING_TAGS:
-      result = addThingTags;
-      break;
+        result = addThingTags;
+        break;
     case PICK_THING:
-      result = pickThing;
-      break;
+        result = pickThing(data);
+        break;
   }
   return result;
 };
