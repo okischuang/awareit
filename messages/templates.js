@@ -162,7 +162,7 @@ function pickThing(data) {
     if (!data || !Array.isArray(data)) {
         return;
     }
-    let filteredData = data.length > 5 ? data.slice(0, 5) : data;
+    let filteredData = data.length > 10 ? data.slice(0, 10) : data;
     let result = {
         "type": "template",
         "altText": "Which item do you want to update?",
@@ -184,7 +184,7 @@ function alertList(data) {
     if (!data || !Array.isArray(data)) {
         return;
     }
-    let filteredData = data.length > 5 ? data.slice(0, 5) : data;
+    let filteredData = data.length > 10 ? data.slice(0, 10) : data;
     let result = {
         "type": "template",
         "altText": "Please choose a reminder",
