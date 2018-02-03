@@ -11,6 +11,7 @@ const {
     PICK_THING,
     PICK_THING_HIST,
     ALERT_LIST,
+    LIST_HISTORY,
 } = require('../constants').ACTION;
 
 let addNewThing = {
@@ -210,6 +211,31 @@ function alertList(data) {
     return result;
 }
 
+function listHistory(data) {
+    if (!data || !Array.isArray(data)) {
+        return;
+    }
+    let filteredData = data.length > 10 ? data.slice(0, 10) : data;
+    let result = {
+        "type": "template",
+        "altText": "Your item history",
+        "template": {
+            "type": "carousel"
+        }
+    };
+    let columns = filteredData.map((obj)=>{
+        return {
+            "title": obj.created.toISOString(),
+            "text": obj.stuff_position + '\n' + obj.tags,
+            "actions": [
+                Action.Postback("Back", "back")
+            ]
+        }
+    });
+    result['template']['columns'] = columns;
+    return result;
+}
+
 module.exports = function(key, data) {
   let result = null;
   switch(key) {
@@ -228,6 +254,9 @@ module.exports = function(key, data) {
         break;
     case ALERT_LIST:
         result = alertList(data);
+        break;
+    case LIST_HISTORY:
+        result = listHistory(data);
         break;
   }
   return result;
