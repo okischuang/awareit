@@ -21,6 +21,10 @@
   },
   "homepage": "https://github.com/okischuang/awareit#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "knex": "^0.14.2",
+    "linebot": "^1.4.1",
+    "pg": "^7.4.1",
+    "underscore": "^1.8.3"
   }
 }
