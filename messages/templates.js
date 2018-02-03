@@ -84,16 +84,16 @@ let editThings = {
 module.exports = function(key, data) {
   let result = null;
   switch(key) {
-    case 'ADD_NEW_THING':
+    case 'add_new_thing':
       result = addNewThing
       break;
-    case 'ADD_THING_PLACE':
+    case 'add_thing_place':
       result = addThingPlace;
       break;
-    case 'ADD_THING_TAGS':
+    case 'add_thing_tags':
       result = addThingTags;
       break;
-    case 'EDIT_THINGS':
+    case 'edit_things':
       result = editThings;
       break;
   }

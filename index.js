@@ -15,16 +15,11 @@ var bot = linebot({
     channelAccessToken: CHANNEL_ACCESS_TOKEN,
 });
 
-const kw_to_key = {
-    'add_new_thing': 'stuff_name',
-    'add_thing_place': 'stuff_position',
-    'add_thing_tags': 'tags'
-}
-
 const {
     ADD_NEW_THING,
     ADD_THING_PLACE,
     ADD_THING_TAGS,
+    ADD_SUMMARY,
     EDIT_THINGS
 } = Constants.ACTION;
 
@@ -35,18 +30,18 @@ async function map_keyword_to_response(userId) {
     console.log("next keyword " + keyword);
     let response;
     switch(keyword) {
-        case 'add_thing_place':
+        case ADD_THING_PLACE:
             response = Templates(ADD_THING_PLACE);
             break;
-        case 'add_thing_tags':
+        case ADD_THING_TAGS:
             response = Templates(ADD_THING_TAGS);
             break;
-        case 'add_summary':
+        case ADD_SUMMARY:
             let ret = await History.addHistory(userId)
             let hist = ret;
             let sum = {};
             sum.type = "text";
-            sum.text = "Your " + hist.stuff_name + " is " + hist.stuff_position + " (" + hist.tags + ")";
+            sum.text = "Recorded: your " + hist.stuff_name + " is " + hist.stuff_position + " (" + hist.tags + ")";
             response = sum;
             break;
         default:
@@ -57,7 +52,7 @@ async function map_keyword_to_response(userId) {
 
 function handle_data(userId, data) {
     let action_data = {}
-    action_data[kw_to_key[keyword]] = data
+    action_data[Constants.ACTIONTOKEY[keyword]] = data
     History.updateAction(userId, keyword, action_data).then((ret) => {
         keyword = ret;
         map_keyword_to_response(userId);
@@ -81,7 +76,7 @@ bot.on('message', function (event) {
 
         switch(cmd) {
             case 'add new thing':
-                response = Templates(ADD_THING_TAGS);
+                response = Templates(ADD_NEW_THING);
                 keyword = 'add_new_thing';
                 break;
             case 'edit things':
