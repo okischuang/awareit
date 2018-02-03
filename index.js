@@ -30,7 +30,7 @@ const {
 
 var keyword;
 
-function handle_data(userId, data) {
+function handle_data(userId, data, params) {
     let action_data = {}
     action_data[Constants.ACTIONTOKEY[keyword]] = data
 
@@ -41,6 +41,12 @@ function handle_data(userId, data) {
     else if (keyword == ALERT_OPTIONS) {
         if (data == 'list alerts') keyword = ALERT_LIST_OPTION;
         else if (data == 'add alert') keyword = ALERT_ADD_OPTION;
+        console.log(params.time)
+        let a = params.time.split(":")
+        let time = new Date();
+        time.setHours(Number.parseInt(a[0]));
+        time.setMinutes(Number.parseInt(a[1]));
+        action_data[Constants.ACTIONTOKEY[keyword]] = [time];
     }
 
     History.updateAction(userId, keyword, action_data).then((ret) => {
@@ -86,7 +92,7 @@ async function map_keyword_to_response(userId, data) {
 }
 
 bot.on('postback', function (event) {
-    handle_data(event.source.userId, event.postback.data);
+    handle_data(event.source.userId, event.postback.data, event.postback.params);
 });
 
 bot.on('message', async function (event) {
