@@ -18,7 +18,7 @@ async function checkReminder () {
   let reminderList = await Reminder.getAllReminder()
   console.log(reminderList)
   reminderList.forEach(async (r) => {
-    let msg = 'Is Your ' + r.name + ' still in the ' + r.stuff_position
+    let msg = 'Is Your ' + r.name + ' still in the ' + r.stuff_position + ' \xF0\x9F\x98\x9D?'
     await bot.push(r.uid, {
       type: 'text',
       text: msg

@@ -30,8 +30,8 @@ module.exports = function () {
     // where r.schedule_time >= '2018-02-03 05:16:20.000' and r.schedule_time <= '2018-02-03 05:16:26.000'
     // order by r.schedule_time asc;
     let now = Date.now()
-    let timeRange = new Date(now - 3000).toISOString()
-    let timeRange1 = new Date(now + 3000).toISOString()
+    let timeRange = new Date(now - 1000).toISOString()
+    let timeRange1 = new Date(now + 1000).toISOString()
     let raw = 'select r.id, r.uid, u.uname, r.schedule_time, us.name, h.stuff_position, h.created from reminder r \
     inner join user_stuff us on r.uid=us.uid and r.stuff_id=us.id \
     inner join users u on r.uid=u.uid \
