@@ -8,7 +8,8 @@ const {
     ADD_THING_PLACE,
     ADD_THING_TAGS,
     ADD_SUMMARY,
-    PICK_THING
+    PICK_THING,
+    PICK_THING_HIST
 } = require('../constants').ACTION;
 
 let addNewThing = {
@@ -186,6 +187,7 @@ module.exports = function(key, data) {
         result = addThingTags;
         break;
     case PICK_THING:
+    case PICK_THING_HIST:
         result = pickThing(data);
         break;
   }
