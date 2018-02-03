@@ -158,6 +158,10 @@ let alertDatePicker = {
 }
 
 function pickThing(data) {
+    if (!data || !Array.isArray(data)) {
+        return;
+    }
+    let filteredData = data.length > 5 ? data.slice(0, 5) : data;
     let result = {
         "type": "template",
         "altText": "Which item do you want to update?",
@@ -165,7 +169,7 @@ function pickThing(data) {
             "type": "carousel"
         }
     };
-    let columns = data.map((obj)=>{
+    let columns = filteredData.map((obj)=>{
         return {
             "text": obj.stuff_name,
             "actions": [Action.Postback("Choose", obj.stuff_id)]
