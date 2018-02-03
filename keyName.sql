@@ -22,26 +22,16 @@ insert into action_key_order (order_id, key_name) values (21, 'pick_thing_next')
 insert into action_key_order (order_id, key_name) values (22, 'pick_thing');
 insert into action_key_order (order_id, key_name) values (23, 'pick_thing_prev');
 insert into action_key_order (order_id, key_name) values (24, 'pick_thing');
-insert into action_key_order (order_id, key_name) values (25, 'pick_thing_history');
+insert into action_key_order (order_id, key_name) values (25, 'pick_thing_hist');
 insert into action_key_order (order_id, key_name) values (26, 'list_history');
 insert into action_key_order (order_id, key_name) values (27, 'list_history_prev');
 insert into action_key_order (order_id, key_name) values (28, 'list_history');
 insert into action_key_order (order_id, key_name) values (29, 'list_history_next');
 insert into action_key_order (order_id, key_name) values (30, 'list_history');
-insert into action_key_order (order_id, key_name) values (31, 'pick_thing_next');
-insert into action_key_order (order_id, key_name) values (32, 'pick_thing');
-insert into action_key_order (order_id, key_name) values (33, 'pick_thing_back');
-insert into action_key_order (order_id, key_name) values (34, 'pick_thing');
-insert into action_key_order (order_id, key_name) values (35, 'pick_thing_hist');
-insert into action_key_order (order_id, key_name) values (36, 'list_history');
-insert into action_key_order (order_id, key_name) values (37, 'list_history_prev');
-insert into action_key_order (order_id, key_name) values (38, 'list_history');
-insert into action_key_order (order_id, key_name) values (39, 'list_history_next');
-insert into action_key_order (order_id, key_name) values (40, 'list_history');
-insert into action_key_order (order_id, key_name) values (41, 'pick_thing_hist_next');
-insert into action_key_order (order_id, key_name) values (42, 'pick_thing_hist');
-insert into action_key_order (order_id, key_name) values (43, 'pick_thing_hist_prev');
-insert into action_key_order (order_id, key_name) values (44, 'pick_thing_hist');
+insert into action_key_order (order_id, key_name) values (31, 'pick_thing_hist_next');
+insert into action_key_order (order_id, key_name) values (32, 'pick_thing_hist');
+insert into action_key_order (order_id, key_name) values (33, 'pick_thing_hist_prev');
+insert into action_key_order (order_id, key_name) values (34, 'pick_thing_hist');
 
 
 

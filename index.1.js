@@ -1,9 +1,11 @@
 const linebot = require('linebot')
 const Stuff = require('./controllers/stuff')()
 const History = require('./controllers/history')()
-const CHANNEL_ID = '1560850616'
-const CHANNEL_SECRET = '66373756b6dff76402df4334744e1d6c'
-const CHANNEL_ACCESS_TOKEN = 'HRVQgcYLclHFeUpiDeWqtbpx05vbPUky0B/4LhowCjgq3RQTTKavmi2jdX6HhsUx6wYLxxpnmgR/jOXFLFHkKwRKh1OHXU9rPAcMttp+LDradQDNeqFjwfFPv6qgaCW6DawPhg1RqZIqqu8/ODCq1AdB04t89/1O/w1cDnyilFU='
+const Reminder = require('./controllers/reminder')()
+const config = require('./config.dev')
+const CHANNEL_ID = config.config.CHANNEL_ID
+const CHANNEL_SECRET = config.config.CHANNEL_SECRET
+const CHANNEL_ACCESS_TOKEN = config.config.CHANNEL_ACCESS_TOKEN
 
 const bot = linebot({
   channelId: CHANNEL_ID,
@@ -27,6 +29,9 @@ bot.on('message', function (event) {
         case 'stuffhistory':
           History.getStuffHistory(userId, 13)
           break
+        case 'addreminder':
+          Reminder.addReminder(userId, 13, [new Date(), new Date()])
+          break
         case 'getstuff':
           console.log('==getStuff==')
           let stuffList = Stuff.getUserStuff(userId)
@@ -36,7 +41,7 @@ bot.on('message', function (event) {
           }
           break
         case 'update':
-          History.updateAction(userId, 'add_thing_place', {stuff_postition: 'bag'})
+          History.updateAction(userId, 'add_thing_place', {stuff_postition: 'bag', schedules: [new Date(), new Date()]})
           History.addHistory(userId).then((h) => {
             console.log(h)
           })

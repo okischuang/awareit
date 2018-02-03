@@ -2,6 +2,7 @@
 
 const db = require('../db')
 const Stuff = require('./stuff')()
+const Reminder = require('./reminder')()
 const _ = require('underscore')
 
 module.exports = function () {
@@ -17,7 +18,7 @@ module.exports = function () {
       console.error(error)
     }
   }
-  internals.updateAction = async (uid, lastAction, data) => {
+  internals.updateAction = async (uid, nowAction, data) => {
     try {
       let hasAction = await db.knex('user_action_state').where({
         uid: uid
@@ -28,22 +29,23 @@ module.exports = function () {
         await db.knex('user_action_state').where({
           uid: uid
         }).update({
-          last_action: lastAction,
+          last_action: nowAction,
           data: newData
         })
       } else {
         console.log('new record')
         let ret = await db.knex('user_action_state').insert({
           uid: uid,
-          last_action: lastAction,
+          last_action: nowAction,
           data: data
         })
         console.log(ret)
       }
+
       // find next action key_name
       let qAction = 'select key_name from action_key_order a where a.order_id=( \
         select min(order_id) from action_key_order \
-        where key_name=\'' + lastAction + '\') + 1'
+        where key_name=\'' + nowAction + '\') + 1'
       let action = await db.knex.raw(qAction)
       console.log(action.rows[0].key_name)
       return action.rows[0].key_name || ''
@@ -58,10 +60,14 @@ module.exports = function () {
     }).select('*')
     //console.log(action)
     // add stuff
+    let schedules = action[0].data.schedules
     let stuffID = await Stuff.addStuff(uid, action[0].data.stuff_name)
     let stuffPosition = action[0].data.stuff_position
     let tags = action[0].data.tags
     let location = action[0].data.location
+
+    await Reminder.addReminder(uid, stuffID[0], schedules)
+
     let insertData = {
       stuff_id: stuffID[0],
       stuff_position: stuffPosition,
@@ -84,7 +90,7 @@ module.exports = function () {
     })
     return allHistory
   }
-  
+
   internals.getStuffHistory = async (uid, stuffID) => {
     try {
       let history = await db.knex('history').where({
