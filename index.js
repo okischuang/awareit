@@ -4,15 +4,10 @@ const Templates = require('./messages/templates');
 
 var linebot = require('linebot');
 
-var CHANNEL_ID = 1560850035;
-var CHANNEL_SECRET = "863a7a3bc1a410b5f973db02e4180718";
-var CHANNEL_ACCESS_TOKEN = "34+2fwcr+U0j47ibV8CJnZ9PPBZBm3sdFWTL2ovSk/RdMbowigDMExzmjbqv2PftotiYf5MFotkHbYIP3n+sGFezi1j7Yad6drGSYZ4cTE7iJQkvDHqkTYM31up7DMkq6HaYV0bmKv8g5n0348gBDQdB04t89/1O/w1cDnyilFU=";
-var PORT = 8000;
-
 var bot = linebot({
-    channelId: CHANNEL_ID,
-    channelSecret: CHANNEL_SECRET,
-    channelAccessToken: CHANNEL_ACCESS_TOKEN,
+    channelId: Constants.CHANNEL_ID,
+    channelSecret: Constants.CHANNEL_SECRET,
+    channelAccessToken: Constants.CHANNEL_ACCESS_TOKEN,
 });
 
 const {
@@ -95,5 +90,5 @@ bot.on('message', function (event) {
 });
 
 
-bot.listen('/', PORT);
+bot.listen('/', Constants.SERVER_PORT);
 
