@@ -2,6 +2,10 @@
 'use strict';
 
 module.exports = {
+  CHANNEL_ID: null,
+  CHANNEL_SECRET: "",
+  CHANNEL_ACCESS_TOKEN: "",
+  SERVER_PORT: 8000,
   ACTION: {
     ADD_NEW_THING: 'add_new_thing',
     ADD_THING_PLACE: 'add_thing_place',
