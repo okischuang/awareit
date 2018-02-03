@@ -31,6 +31,7 @@ module.exports = {
   ACTIONTOKEY: {
     'add_new_thing': 'stuff_name',
     'add_thing_place': 'stuff_position',
-    'add_thing_tags': 'tags'
+    'add_thing_tags': 'tags',
+    'alert_add_option': 'schedules'
   }
 }
