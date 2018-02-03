@@ -8,7 +8,13 @@ const {
     ADD_THING_PLACE,
     ADD_THING_TAGS,
     ADD_SUMMARY,
-    PICK_THING
+    PICK_THING,
+    PICK_THING_HIST,
+    ALERT_LIST,
+    LIST_HISTORY,
+    UPDATE_OPTIONS,
+    ALERT_OPTIONS,
+    ALERT_DATEPICKER
 } = require('../constants').ACTION;
 
 let addNewThing = {
@@ -87,10 +93,6 @@ let addThingTags = {
     }
 };
 
-let lostSomething = {
-
-}
-
 let updateOptions = {
     "type": "template",
     "altText": "This is a buttons template",
@@ -132,9 +134,11 @@ let alertOptions = {
             "data": "list alerts"
         },
         {
-            "type": "postback",
-            "label": "Add an alert",
-            "data": "add alert"
+           // "type": "postback",
+            "type":"datetimepicker",
+            "label":"Add an alert",
+            "data":"add alert",
+            "mode":"time"
         },
         {
             "type": "postback",
@@ -145,17 +149,11 @@ let alertOptions = {
     }
 };
 
-let alertDatePicker = {  
-   "type":"datetimepicker",
-   "label":"Select time",
-   "data":"storeId=12345",
-   "mode":"time",
-   "initial":"2018-02-03t00:00",
-   "max":"2019-02-03t23:59",
-   "min":"2018-02-03t00:00"
-}
-
 function pickThing(data) {
+    if (!data || !Array.isArray(data)) {
+        return;
+    }
+    let filteredData = data.length > 10 ? data.slice(0, 10) : data;
     let result = {
         "type": "template",
         "altText": "Which item do you want to update?",
@@ -163,10 +161,66 @@ function pickThing(data) {
             "type": "carousel"
         }
     };
-    let columns = data.map((obj)=>{
+    let columns = filteredData.map((obj)=>{
         return {
             "text": obj.stuff_name,
             "actions": [Action.Postback("Choose", obj.stuff_id)]
+        }
+    });
+    result['template']['columns'] = columns.slice(0, 5);
+    return result;
+}
+
+function alertList(data) {
+    if (!data || !Array.isArray(data)) {
+        return;
+    }
+    let filteredData = data.length > 10 ? data.slice(0, 10) : data;
+    let result = {
+        "type": "template",
+        "altText": "Please choose a reminder",
+        "template": {
+            "type": "carousel"
+        }
+    };
+    let columns = filteredData.map((obj)=>{
+        let timeString = "";
+        if (obj.schedule_time) {
+            timeString = obj.schedule_time.getHours() + ":" + obj.schedule_time.getMinutes();
+        }
+        return {
+            "title": obj.stuff_name,
+            "text": timeString,
+            "actions": [
+                Action.Postback("Edit", obj.id),
+                Action.Postback("Delete", obj.id),
+                Action.Postback("Back", obj.id)
+            ]
+        }
+    });
+    result['template']['columns'] = columns;
+    return result;
+}
+
+function listHistory(data) {
+    if (!data || !Array.isArray(data)) {
+        return;
+    }
+    let filteredData = data.length > 10 ? data.slice(0, 10) : data;
+    let result = {
+        "type": "template",
+        "altText": "Your item history",
+        "template": {
+            "type": "carousel"
+        }
+    };
+    let columns = filteredData.map((obj)=>{
+        return {
+            "title": obj.created.toISOString(),
+            "text": obj.stuff_position + '\n' + obj.tags,
+            "actions": [
+                Action.Postback("Back", "back")
+            ]
         }
     });
     result['template']['columns'] = columns;
@@ -186,8 +240,24 @@ module.exports = function(key, data) {
         result = addThingTags;
         break;
     case PICK_THING:
+    case PICK_THING_HIST:
         result = pickThing(data);
         break;
+    case ALERT_LIST:
+        result = alertList(data);
+        break;
+    case LIST_HISTORY:
+        result = listHistory(data);
+        console.log(result)
+        break;
+    case UPDATE_OPTIONS:
+        result = updateOptions;
+        break;
+    case ALERT_OPTIONS:
+        result = alertOptions;
+        break;
+    default:
+        console.log("No suck template");
   }
   return result;
 };

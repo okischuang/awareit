@@ -2,9 +2,9 @@
 'use strict';
 
 module.exports = {
-  CHANNEL_ID: null,
-  CHANNEL_SECRET: "",
-  CHANNEL_ACCESS_TOKEN: "",
+  CHANNEL_ID: 1560850035,
+  CHANNEL_SECRET: "863a7a3bc1a410b5f973db02e4180718",
+  CHANNEL_ACCESS_TOKEN: "34+2fwcr+U0j47ibV8CJnZ9PPBZBm3sdFWTL2ovSk/RdMbowigDMExzmjbqv2PftotiYf5MFotkHbYIP3n+sGFezi1j7Yad6drGSYZ4cTE7iJQkvDHqkTYM31up7DM    kq6HaYV0bmKv8g5n0348gBDQdB04t89/1O/w1cDnyilFU=",
   SERVER_PORT: 8000,
   ACTION: {
     ADD_NEW_THING: 'add_new_thing',
