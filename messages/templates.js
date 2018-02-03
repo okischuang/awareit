@@ -6,6 +6,7 @@ const {
     ADD_THING_PLACE,
     ADD_THING_TAGS,
     ADD_SUMMARY,
+    PICK_THING
 } = require('../constants').ACTION;
 
 let addNewThing = {
@@ -84,6 +85,80 @@ let addThingTags = {
     }
 };
 
+let pickThing = {
+    "type": "text",
+    "text": "dummy"
+}
+
+let lostSomething = {
+
+}
+
+let updateOptions = {
+    "type": "template",
+    "altText": "This is a buttons template",
+    "template": {
+        "type": "buttons",
+        "title": "Options",
+        "text": "Please select one:",
+        "actions": [
+        {
+            "type": "postback",
+            "label": "Update location",
+            "data": "update location"
+        },
+        {
+            "type": "postback",
+            "label": "Set alert",
+            "data": "set alert"
+        },
+        {
+            "type": "postback",
+            "label": "Back",
+            "data": "back"
+        }
+        ]
+    }
+};
+
+let alertOptions = {
+    "type": "template",
+    "altText": "This is a buttons template",
+    "template": {
+        "type": "buttons",
+        "title": "Alert options",
+        "text": "Please select one:",
+        "actions": [
+        {
+            "type": "postback",
+            "label": "List alerts",
+            "data": "list alerts"
+        },
+        {
+            "type": "postback",
+            "label": "Add an alert",
+            "data": "add alert"
+        },
+        {
+            "type": "postback",
+            "label": "Back",
+            "data": "back"
+        }
+        ]
+    }
+};
+
+let alertDatePicker = {  
+   "type":"datetimepicker",
+   "label":"Select time",
+   "data":"storeId=12345",
+   "mode":"time",
+   "initial":"2018-02-03t00:00",
+   "max":"2019-02-03t23:59",
+   "min":"2018-02-03t00:00"
+}
+
+
 module.exports = function(key, data) {
   let result = null;
   switch(key) {
@@ -95,6 +170,9 @@ module.exports = function(key, data) {
       break;
     case ADD_THING_TAGS:
       result = addThingTags;
+      break;
+    case PICK_THING:
+      result = pickThing;
       break;
   }
   return result;
